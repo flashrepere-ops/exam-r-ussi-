@@ -10,49 +10,92 @@
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .exam-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 15px; color: white; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-align: center; }
         .exam-btn:hover, .exam-btn.active { background: #f1c40f; color: #0f2027; border-color: #f1c40f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3); }
+        .country-indicator { font-size: 0.85rem; color: #f1c40f; margin-bottom: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <h2>Votre Examen Cible</h2>
-            <p style="color: #bdc3c7; font-size: 0.85rem; margin-top: 5px;">Sélectionnez votre classe et votre série pour un parcours sur-mesure.</p>
+            <div class="country-indicator" id="selected-country-label">📍 Chargement du pays...</div>
+            <p style="color: #bdc3c7; font-size: 0.85rem; margin-bottom: 15px;">Sélectionnez votre classe et votre série adaptées au programme officiel.</p>
             
             <div class="section-title">1. Niveau / Examen</div>
-            <div class="options-grid">
+            <div class="options-grid" id="levels-container">
                 <button class="exam-btn" onclick="selectLevel(this, 'BEPC')">BEPC</button>
                 <button class="exam-btn" onclick="selectLevel(this, 'PROBATOIRE')">Probatoire</button>
                 <button class="exam-btn active" onclick="selectLevel(this, 'BAC')">BAC</button>
                 <button class="exam-btn" onclick="selectLevel(this, 'CONCOURS')">Concours</button>
             </div>
 
-            <div class="section-title">2. Série / Filière</div>
-            <div class="options-grid">
-                <button class="exam-btn active" onclick="selectSeries(this, 'BAC D')">Série D (Sci.)</button>
-                <button class="exam-btn" onclick="selectSeries(this, 'BAC C')">Série C (Maths/Phys)</button>
-                <button class="exam-btn" onclick="selectSeries(this, 'BAC A4')">Série A4 (Lit.)</button>
-                <button class="exam-btn" onclick="selectSeries(this, 'BAC G2')">Série G2 (Tech.)</button>
+            <div class="section-title">2. Série / Filière officielle</div>
+            <div class="options-grid" id="series-container">
+                <!-- Généré dynamiquement selon le pays -->
             </div>
 
-            <button class="btn-primary" onclick="validerChoix()">Valider mon profil 🚀</button>
+            <button class="btn-primary" onclick="validerChoix()" style="margin-top: 25px;">Valider mon profil 🚀</button>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
+        const userData = ExamApp.getUserData();
+        
+        // Affichage du pays en cours
+        document.getElementById('selected-country-label').innerText = `📍 Système éducatif : ${userData.country}`;
+
         let selectedExam = "BAC";
-        let selectedSeries = "BAC D";
+        let selectedSeries = userData.country === "Bénin" ? "Terminale D (Bénin)" : "BAC D";
+
+        // Définition des séries par pays pour une précision totale
+        const seriesByCountry = {
+            "Bénin": [
+                { name: "Série A1 / A2", code: "Bénin A" },
+                { name: "Série C (Maths)", code: "Bénin C" },
+                { name: "Série D (Exp)", code: "Terminale D (Bénin)" },
+                { name: "Série G2 (Tech)", code: "Bénin G2" }
+            ],
+            "Togo": [
+                { name: "Série D (Sci.)", code: "BAC D" },
+                { name: "Série C (Maths/Phys)", code: "BAC C" },
+                { name: "Série A4 (Lit.)", code: "BAC A4" },
+                { name: "Série G2 (Tech.)", code: "BAC G2" }
+            ],
+            "Côte d'Ivoire": [
+                { name: "Série D", code: "CI D" },
+                { name: "Série C", code: "CI C" },
+                { name: "Série A", code: "CI A" },
+                { name: "Série B", code: "CI B" }
+            ],
+            "Burkina Faso": [
+                { name: "Série D", code: "BF D" },
+                { name: "Série C", code: "BF C" },
+                { name: "Série A4", code: "BF A4" }
+            ]
+        };
+
+        // Chargement dynamique des séries selon le pays choisi (par défaut Togo si non trouvé)
+        const currentCountrySeries = seriesByCountry[userData.country] || seriesByCountry["Togo"];
+        const seriesContainer = document.getElementById('series-container');
+
+        currentCountrySeries.forEach((item, index) => {
+            const btn = document.createElement('button');
+            btn.className = `exam-btn ${index === 2 ? 'active' : ''}`;
+            btn.innerText = item.name;
+            btn.onclick = (e) => selectSeries(e.target, item.code);
+            seriesContainer.appendChild(btn);
+        });
 
         function selectLevel(button, level) {
-            document.querySelectorAll('.options-grid:nth-of-type(1) .exam-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#levels-container .exam-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             selectedExam = level;
         }
 
-        function selectSeries(button, series) {
-            document.querySelectorAll('.options-grid:nth-of-type(2) .exam-btn').forEach(btn => btn.classList.remove('active'));
+        function selectSeries(button, seriesCode) {
+            document.querySelectorAll('#series-container .exam-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            selectedSeries = series;
+            selectedSeries = seriesCode;
         }
 
         function validerChoix() {
