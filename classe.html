@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Choix de la Classe et de l'Examen</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .section-title { font-size: 0.95rem; color: #2ecc71; margin: 20px 0 10px 0; font-weight: bold; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .exam-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 15px; color: white; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .exam-btn:hover, .exam-btn.active { background: #f1c40f; color: #0f2027; border-color: #f1c40f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Votre Examen Cible</h2>
+            <p style="color: #bdc3c7; font-size: 0.85rem; margin-top: 5px;">Sélectionnez votre classe et votre série pour un parcours sur-mesure.</p>
+            
+            <div class="section-title">1. Niveau / Examen</div>
+            <div class="options-grid">
+                <button class="exam-btn" onclick="selectLevel(this, 'BEPC')">BEPC</button>
+                <button class="exam-btn" onclick="selectLevel(this, 'PROBATOIRE')">Probatoire</button>
+                <button class="exam-btn active" onclick="selectLevel(this, 'BAC')">BAC</button>
+                <button class="exam-btn" onclick="selectLevel(this, 'CONCOURS')">Concours</button>
+            </div>
+
+            <div class="section-title">2. Série / Filière</div>
+            <div class="options-grid">
+                <button class="exam-btn active" onclick="selectSeries(this, 'BAC D')">Série D (Sci.)</button>
+                <button class="exam-btn" onclick="selectSeries(this, 'BAC C')">Série C (Maths/Phys)</button>
+                <button class="exam-btn" onclick="selectSeries(this, 'BAC A4')">Série A4 (Lit.)</button>
+                <button class="exam-btn" onclick="selectSeries(this, 'BAC G2')">Série G2 (Tech.)</button>
+            </div>
+
+            <button class="btn-primary" onclick="validerChoix()">Valider mon profil 🚀</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let selectedExam = "BAC";
+        let selectedSeries = "BAC D";
+
+        function selectLevel(button, level) {
+            document.querySelectorAll('.options-grid:nth-of-type(1) .exam-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            selectedExam = level;
+        }
+
+        function selectSeries(button, series) {
+            document.querySelectorAll('.options-grid:nth-of-type(2) .exam-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            selectedSeries = series;
+        }
+
+        function validerChoix() {
+            ExamApp.saveUserData('exam_level', selectedExam);
+            ExamApp.saveUserData('exam_series', selectedSeries);
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

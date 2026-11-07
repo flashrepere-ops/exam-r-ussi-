@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Annales & Corrigés Détaillés</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .subject-badge {
+            background: #2ecc71;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .doc-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .doc-title {
+            font-size: 1.1rem;
+            color: #f1c40f;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .doc-meta {
+            font-size: 0.85rem;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+        .method-box {
+            background: rgba(241, 196, 15, 0.15);
+            border-left: 4px solid #f1c40f;
+            padding: 12px 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+        .method-box strong {
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .correction-step {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .correction-step h4 {
+            font-size: 0.95rem;
+            color: #2ecc71;
+            margin-bottom: 8px;
+        }
+        .correction-step p {
+            font-size: 0.85rem;
+            color: #ecf0f1;
+            line-height: 1.4;
+        }
+        .action-btn {
+            width: 100%;
+            background: #f1c40f;
+            color: #0f2027;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-top: 10px;
+        }
+        .action-btn:hover {
+            background: #d4ac0d;
+            transform: scale(1.02);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-bar">
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">← Dashboard</button>
+            <div class="subject-badge" id="subject-badge-title">⚡ SVT (BAC D)</div>
+        </div>
+
+        <div class="doc-card">
+            <div class="doc-title" id="annale-title">Sujet Officiel : Génétique & Hérédité</div>
+            <div class="doc-meta">📅 Session Normale • Durée : 3h • Coefficient : 4</div>
+            <p style="font-size: 0.9rem; line-height: 1.4;">Analyse des croisements de Drosophiles et interprétation des résultats statistiques de Thomas Hunt Morgan (Gènes liés & Crossing-over).</p>
+        </div>
+
+        <div class="method-box">
+            <strong>💡 Point de Méthode Exclusif</strong>
+            Pour identifier le phénomène de crossing-over, vérifiez si les proportions des phénotypes combinés sont très inférieures aux phénotypes parentaux lors du test-cross.
+        </div>
+
+        <div class="doc-card">
+            <div class="doc-title" style="color: #2ecc71;">Correction Détaillée Pas à Pas</div>
+            
+            <div class="correction-step">
+                <h4>Étape 1 : Analyse des parents et F1</h4>
+                <p>Les parents sont de lignée pure. La génération F1 est à 100% homogène, ce qui valide la 1ère loi de Mendel.</p>
+            </div>
+
+            <div class="correction-step" style="margin-top: 10px;">
+                <h4>Étape 2 : Interprétation du Test-Cross</h4>
+                <p>La présence de 4 phénotypes avec 2 prédominants parentaux démontre un linkage partiel avec recombinaison chromosomique.</p>
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="telechargerSujet()">📥 Télécharger pour mode hors-ligne</button>
+    </div>
+
+    <script>
+        const savedSubject = localStorage.getItem('current_subject') || 'SVT';
+        const savedSeries = localStorage.getItem('exam_series') || 'BAC D';
+
+        document.getElementById('subject-badge-title').innerText = `${savedSubject} (${savedSeries})`;
+        document.getElementById('annale-title').innerText = `Sujet Officiel : Corrigé ${savedSubject}`;
+
+        function telechargerSujet() {
+            alert(`Fiche et corrigé de ${savedSubject} sauvegardés dans votre téléphone ! Disponible hors-ligne.`);
+        }
+    </script>
+
+</body>
+</html>

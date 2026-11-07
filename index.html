@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Excellence Africaine Mobile</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; text-align: center; }
+        .container { width: 100%; max-width: 400px; padding: 20px; }
+        #splash-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .logo-box { font-size: 3.5rem; font-weight: bold; color: #f1c40f; margin-bottom: 10px; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 0.85rem; letter-spacing: 2px; color: #bdc3c7; margin-bottom: 30px; }
+        .loader { width: 80%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; margin-top: 20px; }
+        .loader-bar { width: 0%; height: 100%; background: #2ecc71; animation: loadProgress 2s forwards; }
+        #space-selection { display: none; flex-direction: column; gap: 15px; }
+        .space-btn { background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 20px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .space-btn:hover { background: #f1c40f; color: #0f2027; border-color: #f1c40f; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(241, 196, 15, 0.4); }
+        @keyframes loadProgress { to { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Écran de chargement initial -->
+        <div id="splash-screen">
+            <div class="logo-box">🎓 EXAM</div>
+            <div class="subtitle">EXCELLENCE AFRICAINE MOBILE</div>
+            <p style="color: #bdc3c7;">Chargement de l'intelligence...</p>
+            <div class="loader"><div class="loader-bar"></div></div>
+        </div>
+
+        <!-- Sélection de l'espace -->
+        <div id="space-selection">
+            <h2 style="margin-bottom: 10px;">Choisissez votre Espace</h2>
+            <p style="color: #bdc3c7; font-size: 0.9rem; margin-bottom: 20px;">Sélectionnez votre système éducatif.</p>
+            <button class="space-btn" onclick="selectSpace('francophone')">🌐 Espace Francophone</button>
+            <button class="space-btn" onclick="selectSpace('anglophone')">🌐 Anglophone Space</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Transition automatique du Splash Screen vers le choix de l'espace
+        setTimeout(() => {
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('space-selection').style.display = 'flex';
+        }, 2200);
+
+        function selectSpace(space) {
+            ExamApp.saveUserData('exam_space', space);
+            window.location.href = 'pays.html';
+        }
+    </script>
+</body>
+</html>

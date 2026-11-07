@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Choix du Pays</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .country-list { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .country-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 16px 20px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 15px; text-align: left; }
+        .country-btn:hover { background: #f1c40f; color: #0f2027; border-color: #f1c40f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3); }
+        .flag { font-size: 1.6rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="text-align: center;">
+            <h2>Sélectionnez votre Pays</h2>
+            <p style="color: #bdc3c7; font-size: 0.9rem; margin-top: 5px;">Pour adapter le programme officiel et les examens.</p>
+        </div>
+        <div class="country-list" id="country-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const userData = ExamApp.getUserData();
+        const countryContainer = document.getElementById('country-container');
+
+        const francophoneCountries = [
+            { name: "Togo", flag: "🇹🇬" },
+            { name: "Bénin", flag: "🇧🇯" },
+            { name: "Côte d'Ivoire", flag: "🇨🇮" },
+            { name: "Burkina Faso", flag: "🇧🇫" }
+        ];
+        
+        const anglophoneCountries = [
+            { name: "Ghana", flag: "🇬🇭" },
+            { name: "Nigeria", flag: "🇳🇬" }
+        ];
+
+        const countriesToDisplay = userData.space === 'francophone' ? francophoneCountries : anglophoneCountries;
+
+        countriesToDisplay.forEach(country => {
+            const btn = document.createElement('button');
+            btn.className = 'country-btn';
+            btn.innerHTML = `<span class="flag">${country.flag}</span> <span>${country.name}</span>`;
+            btn.onclick = () => selectCountry(country.name);
+            countryContainer.appendChild(btn);
+        });
+
+        function selectCountry(countryName) {
+            ExamApp.saveUserData('exam_country', countryName);
+            window.location.href = 'classe.html';
+        }
+    </script>
+</body>
+</html>

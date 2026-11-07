@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Tableau de Bord</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .user-info h3 { font-size: 1.1rem; color: #f1c40f; }
+        .user-info p { font-size: 0.8rem; color: #bdc3c7; }
+        .wallet-badge { background: rgba(241, 196, 15, 0.15); border: 1px solid #f1c40f; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; color: #f1c40f; cursor: pointer; }
+        .countdown-card { background: linear-gradient(135deg, #d35400, #e67e22); border-radius: 14px; padding: 18px; text-align: center; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3); }
+        .countdown-card h4 { font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .countdown-timer { font-size: 1.8rem; font-weight: bold; color: #fff; }
+        .section-title { font-size: 1rem; margin-bottom: 12px; color: #2ecc71; font-weight: bold; }
+        .subjects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .subject-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .subject-card:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-3px); border-color: #2ecc71; }
+        .subject-icon { font-size: 1.8rem; margin-bottom: 6px; }
+        .subject-name { font-size: 0.9rem; font-weight: bold; }
+        .premium-banner { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #0f2027; border-radius: 12px; padding: 14px; text-align: center; font-weight: bold; cursor: pointer; box-shadow: c0 5px 15px rgba(241, 196, 15, 0.3); transition: transform 0.3s ease; }
+        .premium-banner:hover { transform: scale(1.02); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="user-info">
+                <h3>Bonjour, Moussa 👋</h3>
+                <p id="user-location-info">Chargement...</p>
+            </div>
+            <div class="wallet-badge" onclick="goToWallet()">💰 <span id="wallet-balance-text">250 F</span></div>
+        </div>
+
+        <div class="countdown-card">
+            <h4 id="target-exam-title">Objectif Officiel</h4>
+            <div class="countdown-timer">⏳ J - 24</div>
+            <p style="font-size: 0.75rem; margin-top: 4px; opacity: 0.9;">Reste concentré, la victoire est proche !</p>
+        </div>
+
+        <div class="section-title">Matières & Révisions</div>
+        <div class="subjects-grid">
+            <div class="subject-card" onclick="openSubject('Mathématiques')"><div class="subject-icon">📐</div><div class="subject-name">Mathématiques</div></div>
+            <div class="subject-card" onclick="openSubject('Physique-Chimie')"><div class="subject-icon">⚡</div><div class="subject-name">Physique-Chimie</div></div>
+            <div class="subject-card" onclick="openSubject('SVT')"><div class="subject-icon">🧬</div><div class="subject-name">S.V.T.</div></div>
+            <div class="subject-card" onclick="openSubject('Philosophie')"><div class="subject-icon">📚</div><div class="subject-name">Philosophie</div></div>
+        </div>
+
+        <div class="premium-banner" onclick="goToWallet()">⭐ Activer le Pass Premium (500 F/mois) 🚀</div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const userData = ExamApp.getUserData();
+        
+        document.getElementById('user-location-info').innerText = `${userData.country} • ${userData.series}`;
+        document.getElementById('target-exam-title').innerText = `Objectif Officiel : ${userData.series}`;
+        document.getElementById('wallet-balance-text').innerText = userData.balance + ' F';
+
+        function openSubject(subjectName) {
+            ExamApp.saveUserData('current_subject', subjectName);
+            window.location.href = 'annales.html';
+        }
+
+        function goToWallet() {
+            window.location.href = 'wallet.html';
+        }
+    </script>
+</body>
+</html>

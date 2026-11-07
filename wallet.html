@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM - Pass Premium & Wallet</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .top-bar { text-align: left; margin-bottom: 15px; }
+        .back-btn { background: rgba(255, 255, 255, 0.1); border: none; color: white; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .wallet-card { background: rgba(255, 255, 255, 0.08); border: 2px solid #f1c40f; border-radius: 16px; padding: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 8px 25px rgba(241, 196, 15, 0.2); }
+        .wallet-title { font-size: 0.85rem; color: #bdc3c7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .wallet-balance { font-size: 2rem; font-weight: bold; color: #f1c40f; margin-bottom: 15px; }
+        .recharge-btn { background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s; font-size: 0.9rem; }
+        .recharge-btn:hover { background: #27ae60; }
+        .offer-card { background: linear-gradient(135deg, #f39c12, #d35400); border-radius: 16px; padding: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 10px 30px rgba(211, 84, 0, 0.4); }
+        .offer-card h3 { font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
+        .price { font-size: 2.2rem; font-weight: bold; color: #fff; margin: 10px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .features-list { text-align: left; margin: 15px 0; font-size: 0.85rem; display: inline-block; }
+        .features-list li { margin-bottom: 6px; list-style: none; }
+        #celebration-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 32, 39, 0.95); z-index: 999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; animation: fadeIn 0.5s ease-in-out; }
+        .celebration-icon { font-size: 3.5rem; margin-bottom: 15px; animation: bounce 1s infinite alternate; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">← Retour</button>
+        </div>
+
+        <div class="wallet-card">
+            <div class="wallet-title">Mon Portefeuille EXAM</div>
+            <div class="wallet-balance" id="balance-display">0 F CFA</div>
+            <button class="recharge-btn" onclick="rechargerWallet()">+ Recharger (Moov / Yas)</button>
+        </div>
+
+        <div class="offer-card">
+            <h3>⭐ Pass Premium Illimité</h3>
+            <p style="font-size: 0.9rem; opacity: 0.9;">Accède à tous les corrigés d'examens et fiches méthodes sans aucune limite.</p>
+            <div class="price">500 F <span style="font-size: 0.9rem;">/ mois</span></div>
+            <ul class="features-list">
+                <li>✅ Tous les sujets et corrigés pas à pas</li>
+                <li>✅ Points de méthode exclusifs</li>
+                <li>✅ Mode hors-ligne (Offline-first)</li>
+            </ul>
+        </div>
+
+        <button class="btn-primary" onclick="acheterPass()">Activer mon Pass 🚀</button>
+    </div>
+
+    <!-- Écran de célébration après achat -->
+    <div id="celebration-overlay">
+        <div class="celebration-icon">🎉🎆🎁</div>
+        <h2 style="color: #f1c40f; font-size: 1.8rem; margin-bottom: 15px;">Félicitations !</h2>
+        <p style="font-size: 1rem; margin-bottom: 25px; color: #bdc3c7;">Ton Pass Premium est activé avec succès ! Tu disposes désormais de tous les outils pour tout déchirer.</p>
+        <button class="btn-primary" style="max-width: 250px;" onclick="goToSuccess()">Découvrir ma réussite 🏆</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let userData = ExamApp.getUserData();
+        document.getElementById('balance-display').innerText = userData.balance + " F CFA";
+
+        function rechargerWallet() {
+            let montant = prompt("Entrez le montant de recharge (Moov, Yas, CinetPay) :", "500");
+            if (montant && !isNaN(montant)) {
+                let newBal = ExamApp.rechargeWallet(montant);
+                document.getElementById('balance-display').innerText = newBal + " F CFA";
+                alert("Recharge réussie ! Nouveau solde : " + newBal + " F CFA");
+            }
+        }
+
+        function acheterPass() {
+            let result = ExamApp.buyPass();
+            if (result.success) {
+                document.getElementById('balance-display').innerText = result.newBalance + " F CFA";
+                document.getElementById('celebration-overlay').style.display = 'flex';
+            } else {
+                alert(result.message);
+                rechargerWallet();
+            }
+        }
+
+        function goToSuccess() {
+            window.location.href = 'success.html';
+        }
+    </script>
+</body>
+</html>
